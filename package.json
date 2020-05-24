@@ -1,0 +1,25 @@
+{
+    "name": "com.cainc.unityconfigsettingstool",
+    "version": "0.1.1+123",
+    "displayName": "Config Settings Tool",
+    "description": "Serialize configs into local json files",
+    "unity": "2019.3",
+    "unityRelease": "",
+    "dependencies": {},
+    "samples": [
+        {
+            "displayName": "Example Usage",
+            "description": "Example script showing how to use LocalStorage",
+            "path": "Samples~/WebStorageExample"
+        }
+    ],
+    "keywords": [
+        "Configs",
+        "Google API",
+        "UIElemnts"
+    ],
+    "author": {
+        "name": "Robert Boyle",
+        "url": "https://github.com/lg/config-settings"
+    }
+}
