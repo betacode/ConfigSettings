@@ -1,5 +1,5 @@
 {
-    "name": "com.cainc.configsettings",
+    "name": "com.betawaves.configsettings",
     "version": "0.1.0",
     "displayName": "Config Settings Tool",
     "description": "Serialize configs into local json files",

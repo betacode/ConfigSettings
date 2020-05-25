@@ -8,6 +8,9 @@ using System.Collections.Generic;
 
 public class ConfigSettings : EditorWindow
 {
+    // must match "name" field in package.json
+    const string PACKAGE_NAME = "com.betawaves.configsettings";
+
     [MenuItem("Tools/Config Settings")]
     public static void ShowExample()
     {
@@ -20,17 +23,20 @@ public class ConfigSettings : EditorWindow
         // Each editor window contains a root VisualElement object
         VisualElement root = rootVisualElement;
 
-        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>("Assets/Editor/ConfigSettings.uss");
+        // Import Style Sheet
+        var ussPath = packagePath("Assets/Editor/ConfigSettings.uss");
+        var styleSheet = AssetDatabase.LoadAssetAtPath<StyleSheet>(ussPath);
 
         // Import UXML
-        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>("Assets/Editor/ConfigSettings.uxml");
+        var uxmlPath = packagePath("Assets/Editor/ConfigSettings.uxml");
+        var visualTree = AssetDatabase.LoadAssetAtPath<VisualTreeAsset>(uxmlPath);
         VisualElement uxmlVE = visualTree.CloneTree();
         uxmlVE.styleSheets.Add(styleSheet);
         root.Add(uxmlVE);
 
         // Add Game Select dropdown menu
         var gameSelect = GameSelectMenu();
-        root.Q<VisualElement>("GameSelectPanel").Add(gameSelect); // add it is a child of a VisualElement
+        root.Q<VisualElement>("GameSelectPanel").Add(gameSelect); // add it as a child of a VisualElement
 
         var goName = root.Q<UnityEngine.UIElements.TextField>("GameObjectName");
         goName.value = "HELP";
@@ -52,12 +58,26 @@ public class ConfigSettings : EditorWindow
     }
 
     private SettingsModel GetSettingsModel() {
-        string settingsFilePath = @"Assets/Editor/ConfigSettings.json";
+        var settingsFilePath = packagePath( @"Assets/Editor/ConfigSettings.json");
         if(!File.Exists(settingsFilePath)) {
             Debug.Log($"file missing: {settingsFilePath}");
         }
         string jsonString = File.ReadAllText(settingsFilePath);
         var setupConfig = SettingsModel.CreateFromJSON(jsonString);
         return setupConfig;
+    }
+
+    private string packagePath(string projectPath) {
+        // check package manager version first
+        var packageManagerPath = $"Packages/{PACKAGE_NAME}/{projectPath}";
+        if(File.Exists(packageManagerPath)) {
+            return packageManagerPath;
+        }
+        // fallback to local project. Used for development
+        if(File.Exists(projectPath)) {
+            return projectPath;
+        }
+        Debug.Log($"file not found at either paths: {projectPath}, {packageManagerPath}");
+        return "";
     }
 }
