@@ -34,17 +34,19 @@ public class ConfigSettings : EditorWindow
         uxmlVE.styleSheets.Add(styleSheet);
         root.Add(uxmlVE);
 
-        // Add Game Select dropdown menu
-        var gameSelect = GameSelectMenu();
-        root.Q<VisualElement>("GameSelectPanel").Add(gameSelect); // add it as a child of a VisualElement
+        // load settings data
+        var setupConfig = this.GetSettingsModel();
 
         var goName = root.Q<UnityEngine.UIElements.TextField>("GameObjectName");
-        goName.value = "HELP";
+        goName.value = setupConfig.project;
+
+        // Add Game Select dropdown menu
+        var gameSelect = GameSelectMenu(setupConfig);
+        root.Q<VisualElement>("GameSelectPanel").Add(gameSelect); // add it as a child of a VisualElement
     }
 
-    private PopupField<string> GameSelectMenu() {
+    private PopupField<string> GameSelectMenu(SettingsModel setupConfig) {
         // select dropdown
-        var setupConfig = this.GetSettingsModel();
         var choices = setupConfig.games;
         choices.Insert(0, "-- Select a game --"); // add None value
 
@@ -58,9 +60,10 @@ public class ConfigSettings : EditorWindow
     }
 
     private SettingsModel GetSettingsModel() {
-        var settingsFilePath = packagePath( @"Assets/Editor/ConfigSettings.json");
+        var settingsFilePath = @"Assets/Editor/ConfigSettings.json";
         if(!File.Exists(settingsFilePath)) {
             Debug.Log($"file missing: {settingsFilePath}");
+            settingsFilePath = packagePath(settingsFilePath); // fallback to package version
         }
         string jsonString = File.ReadAllText(settingsFilePath);
         var setupConfig = SettingsModel.CreateFromJSON(jsonString);

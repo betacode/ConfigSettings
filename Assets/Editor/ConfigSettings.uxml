@@ -1,17 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
-<UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:engine="UnityEngine.UIElements"
-    xmlns:editor="UnityEditor.UIElements"
-    xmlns:ui="UnityEngine.UIElements"
-    xsi:noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd"
->
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements">
     <ui:VisualElement name="top-element">
-        <ui:Label name="top-label" text="Config Settings Editor"/>
-
-        <!-- Container for Game Select dropdown menu -->
-        <ui:VisualElement name="GameSelectPanel" />
-
-        <ui:TextField name="GameObjectName" label="Test" text="" binding-path="m_Name"/>
+        <ui:Label name="top-label" text="Config Settings Editor" />
+        <ui:TextField name="GameObjectName" label="Project" binding-path="m_Name" />
+        <ui:VisualElement name="GameSelectPanel" style="min-width: auto; min-height: 20px;" />
     </ui:VisualElement>
-</UXML>
+</ui:UXML>

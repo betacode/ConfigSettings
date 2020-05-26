@@ -4,6 +4,7 @@ using System.Collections.Generic;
 [System.Serializable]
 public class SettingsModel
 {
+    public string project;
     public List<string> games;
 
     public static SettingsModel CreateFromJSON(string jsonString)
